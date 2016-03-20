@@ -1,0 +1,26 @@
+#
+# A virtual host using mix of IP-, name-, and port-based configuration
+#
+
+server {
+    listen       80;
+    server_name  kaotil.com;
+    root   /usr/share/www;
+    index  index.php index.html;
+
+    location ~ \.php$ {
+        root           /usr/share/www;
+        fastcgi_pass   unix:/var/run/php-fpm/php-fpm.sock;
+        fastcgi_index  index.php;
+        fastcgi_param  SCRIPT_FILENAME  /usr/share/www$fastcgi_script_name;
+        include        fastcgi_params;
+    }
+
+    location /slides {
+        try_files $uri $uri/ @rewrite;
+    }
+
+    location @rewrite {
+        rewrite  ^/slides/(.*)  /slides/slide.php?id=$1  last;
+    }
+}
