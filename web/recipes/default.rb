@@ -31,6 +31,16 @@ end
 #    end
 #end
 
+template "www.conf" do
+  path '/etc/php-fpm.d/www.conf'
+  source 'www.conf.erb'
+  owner "root"
+  group "root"
+  mode 0644
+
+  notifies :reload, "service[php-fpm]"
+end
+
 service "php-fpm" do
   action [:start]
 end
