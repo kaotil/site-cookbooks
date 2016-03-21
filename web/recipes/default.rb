@@ -27,6 +27,6 @@ end
 
 %w{php-fpm nginx}.each do |service_name|
     service service_name do
-      action [:start, :restart]
+      action [:enable, :start, :restart]
     end
 end
