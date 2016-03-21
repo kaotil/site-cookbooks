@@ -38,7 +38,7 @@ template "www.conf" do
   group "root"
   mode 0644
 
-  notifies :reload, "service[php-fpm]"
+  notifies :restart, "service[php-fpm]"
 end
 
 service "php-fpm" do
