@@ -1,15 +1,20 @@
-package "nginx" do
-  action :install
+packages = %w{git nginx php56 php56-fpm}
+
+packages.each do |pkg|
+  package pkg do
+    action [:install, :upgrade]
+  end
 end
+
+#package "nginx" do
+#  action :install
+#end
 
 service "nginx" do
   supports status: true, restart: true, reload: true
   action [:enable, :start]
 end
 
-# ./site_cookbooks/templates/default/nginx.conf.erbを元にして
-# nginxの設定ファイルを決まったところに置くよという指示
-# Chefの規約にのおかげで置き場所のパスやテンプレートファイルは省略できている
 template "kaotil.com.conf" do
   path '/etc/nginx/conf.d/kaotil.com.conf'
   source 'kaotil.com.conf.erb'
@@ -18,4 +23,10 @@ template "kaotil.com.conf" do
   mode 0644
 
   notifies :reload, "service[nginx]"
+end
+
+%w{php56-fpm nginx}.each do |service_name|
+    service service_name do
+      action [:start, :restart]
+    end
 end
