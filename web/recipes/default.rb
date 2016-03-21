@@ -10,10 +10,10 @@ end
 #  action :install
 #end
 
-service "nginx" do
-  supports status: true, restart: true, reload: true
-  action [:enable, :start]
-end
+#service "nginx" do
+#  supports status: true, restart: true, reload: true
+#  action [:enable, :start]
+#end
 
 template "kaotil.com.conf" do
   path '/etc/nginx/conf.d/kaotil.com.conf'
@@ -25,7 +25,7 @@ template "kaotil.com.conf" do
   notifies :reload, "service[nginx]"
 end
 
-%w{php56-fpm nginx}.each do |service_name|
+%w{php-fpm nginx}.each do |service_name|
     service service_name do
       action [:start, :restart]
     end
