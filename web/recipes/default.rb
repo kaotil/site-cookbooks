@@ -15,6 +15,14 @@ service "nginx" do
   action [:enable, :start]
 end
 
+template "mime.types" do
+  path '/etc/nginx/mime.types'
+  source 'mime.types.erb'
+  owner "root"
+  group "root"
+  mode 0644
+end
+
 template "kaotil.com.conf" do
   path '/etc/nginx/conf.d/kaotil.com.conf'
   source 'kaotil.com.conf.erb'
