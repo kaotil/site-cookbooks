@@ -4,15 +4,19 @@
 
 server {
     listen       80;
-    server_name  kaotil.com blue.kaotil.com green.kaotil.com;
-    root   /usr/share/www;
+    server_name  kaotil.com;
+    root   /var/www/kaotil.com/src;
     index  index.php index.html;
 
+    # httpsにリダイレクト
+    if ($http_x_forwarded_proto != https) {
+      return 301 https://$host$request_uri;
+    }
+
     location ~ \.php$ {
-        root           /usr/share/www;
         fastcgi_pass   unix:/var/run/php-fpm/php-fpm.sock;
         fastcgi_index  index.php;
-        fastcgi_param  SCRIPT_FILENAME  /usr/share/www$fastcgi_script_name;
+        fastcgi_param  SCRIPT_FILENAME  /var/www/kaotil.com/src$fastcgi_script_name;
         include        fastcgi_params;
     }
 
@@ -24,3 +28,4 @@ server {
         rewrite  ^/slides/(.*)  /slides/slide.php?id=$1  last;
     }
 }
+
